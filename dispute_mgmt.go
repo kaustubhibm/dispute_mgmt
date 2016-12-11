@@ -39,7 +39,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	if function == "write" {
 		var key, value string
 		var err error
-		if len(args) != 2 {
+		if len(args) != 5 {
 			return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
 		}
 		key = args[0]
