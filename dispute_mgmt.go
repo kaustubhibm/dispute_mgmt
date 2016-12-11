@@ -44,6 +44,9 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		}
 		key = args[0]
 		value = "{\"" + args[1] + "\"," + args[2] + "\"," + args[3] + "\"," + args[4] + "\""
+		
+		fmt.Println("********>>>>>> Value is " + value)
+		
 		err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
 		if err != nil {
 			return nil, err
