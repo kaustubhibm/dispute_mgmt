@@ -43,7 +43,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 			return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
 		}
 		key = args[0]
-		value = "{\"" + args[1] + "\"," + args[2] + "\"," + args[3] + "\"," + args[4] + "\""
+		value = "{" + args[1] + "," + args[2] + "," + args[3] + "," + args[4] + "}"
 		
 		fmt.Println("********>>>>>> Value is " + value)
 		
