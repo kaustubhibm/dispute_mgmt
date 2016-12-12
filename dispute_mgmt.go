@@ -47,7 +47,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		}
 		key = args[0]
 		
-		disputeRecord := &DisputeClaimRecord{ DisputeId: args[1], TransactionId: args[2], DisputeType: args[3], Comments: args[4]}
+		disputeRecord := DisputeClaimRecord{DisputeId: args[1], TransactionId: args[2], DisputeType: args[3], Comments: args[4]}
 		disputeRecordJSON, err := json.Marshal(disputeRecord)
 		
 		if(err != nil){
