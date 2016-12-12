@@ -29,17 +29,21 @@ func main() {
 
 // Init resets all the things
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+	
+	fmt.Println("Init is running ")
+	
 	return nil, nil
 }
 
-// Invoke isur entry point to invoke a chaincode function
+// Invoke is an entry point to invoke a chaincode function
 func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+	
 	fmt.Println("invoke is running " + function)
 
 	if function == "write" {
 		var key string
 		if len(args) != 5 {
-			return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
+			return nil, errors.New("Incorrect number of arguments. Expecting 5. name of the key and value to set")
 		}
 		key = args[0]
 		
@@ -50,20 +54,18 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 			fmt.Println("Error while creating JSON structure: %s" , err)		
 		}
 		
-		// value = "{" + args[1] + "," + args[2] + "," + args[3] + "," + args[4] + "}"
-		
-		fmt.Println("********>>>>>> Value is " + string(disputeRecordJSON))
-		
+		// store the JSON on ledger
 		err = stub.PutState(key, disputeRecordJSON) //write the variable into the chaincode state
 		if err != nil {
 			return nil, err
-		}
+		}		
 	}
 		return nil, nil
 }
 
-// Query is our entry point for queries
+// Query is an entry point for queries
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+	
 	fmt.Println("query is running " + function)
 	
 	if function == "read" {
