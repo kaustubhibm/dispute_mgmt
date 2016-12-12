@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
-
+	"encoding/json"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -12,9 +12,9 @@ type SimpleChaincode struct {
 }
 
 // DisputeClaim request structure
-type DisputeClaim struct{
+type DisputeClaimRecord struct{
 
-	ClaimId string `json:"claimid"`
+	DisputeId string `json:"claimid"`
 	TransactionId string `json:"transactionid"`
 	DisputeType string `json:"disputetype"`
 	Comments string `json:"comments"`
@@ -37,17 +37,24 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	fmt.Println("invoke is running " + function)
 
 	if function == "write" {
-		var key, value string
-		var err error
+		var key string
 		if len(args) != 5 {
 			return nil, errors.New("Incorrect number of arguments. Expecting 2. name of the key and value to set")
 		}
 		key = args[0]
-		value = "{" + args[1] + "," + args[2] + "," + args[3] + "," + args[4] + "}"
 		
-		fmt.Println("********>>>>>> Value is " + value)
+		disputeRecord := &DisputeClaimRecord{ DisputeId: args[1], TransactionId: args[2], DisputeType: args[3], Comments: args[4]}
+		disputeRecordJSON, err := json.Marshal(disputeRecord)
 		
-		err = stub.PutState(key, []byte(value)) //write the variable into the chaincode state
+		if(err != nil){
+			fmt.Println("Error while creating JSON structure: %s" , err)		
+		}
+		
+		// value = "{" + args[1] + "," + args[2] + "," + args[3] + "," + args[4] + "}"
+		
+		fmt.Println("********>>>>>> Value is " + string(disputeRecordJSON))
+		
+		err = stub.PutState(key, disputeRecordJSON) //write the variable into the chaincode state
 		if err != nil {
 			return nil, err
 		}
